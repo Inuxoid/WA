@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewBag.Title = "New";
+    Layout = "_Layout";
+}
+
+<h2>New</h2>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <form method="post" action="neworder">
+        <table>
+            <tr><td><p>Введите свое имя </p></td>
+                <td><input type="text" name="Person" /> </td></tr>
+            <tr><td><p>Введите адрес :</p></td>
+                <td><input type="text" name="Address" /> </td></tr>
+            <tr><td><input type="submit" value="Отправить" /> </td>
+                <td></td></tr>
+        </table>
+    </form>
+}
