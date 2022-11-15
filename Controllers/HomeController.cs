@@ -8,13 +8,14 @@ namespace WA.Controllers
 {
     public class HomeController : Controller
     {
-        private OrderDbContext db = new OrderDbContext(new DbContextOptions<OrderDbContext>());
-        
+        private readonly OrderDbContext _db;
+       
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, OrderDbContext db)
         {
             _logger = logger;
+            _db = db;
         }
 
         public IActionResult Index()
@@ -28,16 +29,19 @@ namespace WA.Controllers
         }
 
         [Route("home/new")]
-        public IActionResult New()
+        public IActionResult New()  
         {
             //return "I'm new";
             return View();
         }
         
         [Route("home/neworder")]
-        public string NewOrder(string? Adress, string? Person)
+        public string NewOrder(string Address, string Person, string Details)
         {
-            return "Thanks for the order, " + Person + ", we sent all information to " + Adress;
+            var Order1 = new OrderModel() {Name = Person, Email = Address, Details = Details };
+            _db.Orders.Add(Order1);
+            _db.SaveChanges();
+            return "Thanks for the order, " + Person + ", we sent all information to " + Address;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
